@@ -15,6 +15,9 @@ class LogProcessor:
         self.activities_first_in_case = set()
         self.activities_last_in_case = set()
         self.activityOccurrences: Dict[str, int] = dict()
+        if 'lifecycle:transition' in log:
+            if len(log['lifecycle:transition'].unique()) > 1:
+                print("Warning! Multiple different lifecycle:transition values detected. Please filter the event log appropriately before use.")
         self.log = log
         case_groups = log.groupby(["case:concept:name"])
         self.case_ids = set(case_groups.groups.keys())
