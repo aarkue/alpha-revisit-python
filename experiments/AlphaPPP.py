@@ -22,7 +22,7 @@ def cleanDFG(dfg: Dict[Tuple[str,str],int], df_thresh = 0.0):
         allOutgoingEdgeValues = [dfg[(x,y)] for (x,y) in dfg if x == a]
         allIncomingEdgeValues = [dfg[(x,y)] for (x,y) in dfg if y == b]
         v = dfg.get((a,b))
-        if (v >= 0.01 * sum(allOutgoingEdgeValues)/len(allOutgoingEdgeValues) or v >=  0.01 * sum(allIncomingEdgeValues)/len(allIncomingEdgeValues)) and v > df_thresh:
+        if (v >= 0.01 * sum(allOutgoingEdgeValues)/len(allOutgoingEdgeValues) or v >=  0.01 * sum(allIncomingEdgeValues)/len(allIncomingEdgeValues)) and v >= df_thresh:
             newDfg[(a,b)] = v
     return newDfg
 
@@ -41,6 +41,7 @@ def repairLogSkip(logProcessor: LogProcessor, threshold) -> Tuple[LogProcessor,S
     def isSignificantDFBetween(a: str, b: str):
       return dfg.get((a,b),0) >= df_threshold
     newNamedTauActivities : Set[str]= set()
+    skips = dict()
     for a in logProcessor.getActivities():
       if dfg.get((a, a), 0) == 0:
           outgoingFromA = {
@@ -64,42 +65,46 @@ def repairLogSkip(logProcessor: LogProcessor, threshold) -> Tuple[LogProcessor,S
                               canSkip.add(b)
               # Update variants and DF
               if len(canSkip) > 0:
-                  newNamedTau = "skip_after_" + a
-                  assert newNamedTau not in logProcessor.getActivities()
-                  variantsBefore = logProcessor.getVariants()
-                  variantsAfter: Dict[str, int] = dict()
-                  for variant in variantsBefore.keys():
-                      variantSplit = variant.split(",")
-                      newVariantSplit: List[str] = list()
-                      for i in range(len(variantSplit)):
-                          newVariantSplit.append(variantSplit[i])
-                          if (
-                              variantSplit[i] == a
-                              and i + 1 < len(variantSplit)
-                              and variantSplit[i + 1] not in canSkip
-                          ):
-                              newVariantSplit.append(newNamedTau)
-                      variantsAfter[",".join(newVariantSplit)] = variantsBefore.get(
-                          variant, 0
-                      )
-                  logProcessor.setVariants(variantsAfter)
+                 skips[a] = canSkip
+    for a in skips:
+      canSkip = skips[a]
+      if len(canSkip) > 0:
+          newNamedTau = "skip_after_" + a
+          assert newNamedTau not in logProcessor.getActivities()
+          variantsBefore = logProcessor.getVariants()
+          variantsAfter: Dict[str, int] = dict()
+          for variant in variantsBefore.keys():
+              variantSplit = variant.split(",")
+              newVariantSplit: List[str] = list()
+              for i in range(len(variantSplit)):
+                  newVariantSplit.append(variantSplit[i])
+                  if (
+                      variantSplit[i] == a
+                      and i + 1 < len(variantSplit)
+                      and variantSplit[i + 1] not in canSkip
+                  ):
+                      newVariantSplit.append(newNamedTau)
+              variantsAfter[",".join(newVariantSplit)] = variantsBefore.get(
+                  variant, 0
+              )
+          logProcessor.setVariants(variantsAfter)
 
-                  dfCountFromAToOther = 0
-                  dfsToDelete = set()
-                  for (x, y) in dfg.keys():
-                      if x == a and y not in canSkip:
-                          dfCountFromAToOther += dfg.get((x, y), 0)
-                          dfsToDelete.add((x, y))
-                  for (x, y) in dfsToDelete:
-                      dfg[(newNamedTau, y)] = dfg.get((x, y))
-                      dfg.pop((x, y))
-                  dfg[(a, newNamedTau)] = dfCountFromAToOther
+          dfCountFromAToOther = 0
+          dfsToDelete = set()
+          for (x, y) in dfg.keys():
+              if x == a and y not in canSkip:
+                  dfCountFromAToOther += dfg.get((x, y), 0)
+                  dfsToDelete.add((x, y))
+          for (x, y) in dfsToDelete:
+              dfg[(newNamedTau, y)] = dfg.get((x, y))
+              dfg.pop((x, y))
+          dfg[(a, newNamedTau)] = dfCountFromAToOther
 
-                  logProcessor.setDfg(dfg)
-                  newNamedTauActivities.add(newNamedTau)
-                  logProcessor.getActivityOccurrences()[
-                      newNamedTau
-                  ] = dfCountFromAToOther
+          logProcessor.setDfg(dfg)
+          newNamedTauActivities.add(newNamedTau)
+          logProcessor.getActivityOccurrences()[
+              newNamedTau
+          ] = dfCountFromAToOther
     for newNamedTauAct in newNamedTauActivities:
         print("added new named tau activity: " + newNamedTauAct)
         logProcessor.getActivities().add(newNamedTauAct)
@@ -120,7 +125,7 @@ def repairLogLoop(logProcessor: LogProcessor,df_p1: float) -> LogProcessor:
     return dfg.get((a,b),0) >= df_threshold
 
   def getSignificantDFActs(a : str):
-    return {b for (x,b) in dfg if x == a and dfg.get((x,b),0) > df_threshold}
+    return {b for (x,b) in dfg if x == a and dfg.get((x,b),0) >= df_threshold}
 
 
   def getReachableBF(activity: str):
