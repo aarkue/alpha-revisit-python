@@ -32,7 +32,7 @@ SECONDS_TIMEOUT = 1.5 * 60 * 60
 # Path where the results (pickle, txt, svg plots and process models) should be saved 
 SAVE_PATH = "../../figures_example/"
 # Path where event logs (see list below) are saved
-EVENT_LOGS_PATH = "../../" #"./event_logs/"
+EVENT_LOGS_PATH = "../../"
 
 # Use Multiprocessing for alignment computation (only used for linear/non-concurrent evaluation)
 LINEAR_USE_MULTIPROCESSING = True
@@ -399,23 +399,23 @@ if __name__ == "__main__":
             "α 80%Cov": AlphaMiner("80%Coverage"),
 
         # Inductive Miner Infrequent Configurations
-            # "IMf 0.1": InductiveMinerInfrequent(0.1),
-            # "IMf 0.2": InductiveMinerInfrequent(0.2),
-            # "IMf 0.3": InductiveMinerInfrequent(0.3),
-            # "IMf 0.4": InductiveMinerInfrequent(0.4),
+            "IMf 0.1": InductiveMinerInfrequent(0.1),
+            "IMf 0.2": InductiveMinerInfrequent(0.2),
+            "IMf 0.3": InductiveMinerInfrequent(0.3),
+            "IMf 0.4": InductiveMinerInfrequent(0.4),
         
 
         # Alpha+++ Configuration
-            # "α+++|4.0|b0.5|t0.5|r0.5": AlphaPPP("TAB|4.0|b0.5|t0.5|r0.5"),
-            # "α+++|4.0|b0.3|t0.7|r0.6": AlphaPPP("TAB|4.0|b0.3|t0.7|r0.6"),
-            # "α+++|4.0|b0.2|t0.8|r0.7": AlphaPPP("TAB|4.0|b0.2|t0.8|r0.7"),
-            # "α+++|4.0|b0.2|t0.8|r0.8": AlphaPPP("TAB|4.0|b0.2|t0.8|r0.8"),
-            # "α+++|4.0|b0.1|t0.9|r0.9": AlphaPPP("TAB|4.0|b0.1|t0.9|r0.9"),
+            "α+++|4.0|b0.5|t0.5|r0.5": AlphaPPP("TAB|4.0|b0.5|t0.5|r0.5"),
+            "α+++|4.0|b0.3|t0.7|r0.6": AlphaPPP("TAB|4.0|b0.3|t0.7|r0.6"),
+            "α+++|4.0|b0.2|t0.8|r0.7": AlphaPPP("TAB|4.0|b0.2|t0.8|r0.7"),
+            "α+++|4.0|b0.2|t0.8|r0.8": AlphaPPP("TAB|4.0|b0.2|t0.8|r0.8"),
+            "α+++|4.0|b0.1|t0.9|r0.9": AlphaPPP("TAB|4.0|b0.1|t0.9|r0.9"),
 
-            # "α+++|2.0|b0.5|t0.5|r0.5": AlphaPPP("TAB|2.0|b0.5|t0.5|r0.5"),
-            # "α+++|2.0|b0.3|t0.7|r0.6": AlphaPPP("TAB|2.0|b0.3|t0.7|r0.6"),
-            # "α+++|2.0|b0.2|t0.8|r0.7": AlphaPPP("TAB|2.0|b0.2|t0.8|r0.7"),
-            # "α+++|2.0|b0.2|t0.8|r0.8": AlphaPPP("TAB|2.0|b0.2|t0.8|r0.8"),
-            # "α+++|2.0|b0.1|t0.9|r0.9": AlphaPPP("TAB|2.0|b0.1|t0.9|r0.9"),
+            "α+++|2.0|b0.5|t0.5|r0.5": AlphaPPP("TAB|2.0|b0.5|t0.5|r0.5"),
+            "α+++|2.0|b0.3|t0.7|r0.6": AlphaPPP("TAB|2.0|b0.3|t0.7|r0.6"),
+            "α+++|2.0|b0.2|t0.8|r0.7": AlphaPPP("TAB|2.0|b0.2|t0.8|r0.7"),
+            "α+++|2.0|b0.2|t0.8|r0.8": AlphaPPP("TAB|2.0|b0.2|t0.8|r0.8"),
+            "α+++|2.0|b0.1|t0.9|r0.9": AlphaPPP("TAB|2.0|b0.1|t0.9|r0.9"),
         },
     )
