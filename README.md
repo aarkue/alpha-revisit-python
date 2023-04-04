@@ -12,9 +12,16 @@ _(Link + More Info will be added here once available)_
 - Visualization/Analyzation Notebook: `vis.ipynb`
 
 
+## Requirements
+```
+pm4py==2.6.1
+Pebble==5.0.3
+pandas==1.3.5
+numpy==1.21.6
+matplotlib==3.5.3
+seaborn==0.12.2
+```
+
 ## License
 This source code is available under the MIT license.
 For more information, read the LICENSE file in this repository.
-
-
-
