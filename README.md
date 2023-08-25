@@ -18,9 +18,16 @@ The corresponding paper "__Revisiting the Alpha Algorithm To Enable Real-Life Pr
 - Activity/Transition Removal Experiments: `remove-disconnected-acts.ipynb` 
 
 
+## Requirements
+```
+pm4py==2.6.1
+Pebble==5.0.3
+pandas==1.3.5
+numpy==1.21.6
+matplotlib==3.5.3
+seaborn==0.12.2
+```
+
 ## License
 This source code is available under the MIT license.
 For more information, read the LICENSE file in this repository.
-
-
-
