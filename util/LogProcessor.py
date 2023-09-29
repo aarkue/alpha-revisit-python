@@ -5,7 +5,7 @@ import re
 
 START_ACTIVITY = "__START"
 END_ACTIVITY = "__END"
-
+STARTEND_ACTIVITIES = {START_ACTIVITY, END_ACTIVITY}
 
 class LogProcessor:
     def __init__(self, log: EventLog) -> None:

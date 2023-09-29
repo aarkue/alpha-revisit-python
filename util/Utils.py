@@ -1,5 +1,7 @@
 from typing import Iterable, Set, Tuple
 
+from util.LogProcessor import END_ACTIVITY, START_ACTIVITY, STARTEND_ACTIVITIES
+
 
 def isNoDFRelationBetweenSymmetric(dfRelation: Set[Tuple[str,str]], aEls: Iterable[str], bEls : Iterable[str]):
     for a in aEls:
@@ -27,7 +29,7 @@ def areAllRelationsDFBetweenStrict(dfRelation: Set[Tuple[str,str]], aEls: Iterab
 def areAllRelationsDFBetweenNonStrict(dfRelation: Set[Tuple[str,str]], aEls: Iterable[str], bEls : Iterable[str]):
     for a in aEls:
         for b in bEls:
-            if (a,b) not in dfRelation:
+            if (a,b) not in dfRelation and a != START_ACTIVITY and b != END_ACTIVITY:
                 return False
     return True
 
